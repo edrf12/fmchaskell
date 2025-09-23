@@ -1,7 +1,7 @@
 module FMCBabyNat where
 
 -- Do not alter this import!
-import Prelude ( Show(..) , Eq(..) , undefined )
+import Prelude ( Show(..) , Eq(..) , undefined)
 
 -- Define evenerything that is undefined,
 -- without using standard Haskell functions.
@@ -34,40 +34,53 @@ infixl 6 +
 
 -- Output: O means False, S O means True
 isZero :: Nat -> Nat
-isZero = undefined
+isZero O  = one
+isZero (S _) = zero 
 
 -- pred is the predecessor but we define zero's to be zero
 pred :: Nat -> Nat
-pred = undefined
+pred O = zero 
+pred (S n) = n
 
 -- Output: O means False, S O means True
 even :: Nat -> Nat
-even = undefined
+even O = one 
+even (S O) = O
+even (S (S n)) = even n
 
 odd :: Nat -> Nat
-odd = undefined
+odd O = O
+odd (S O) = one 
+odd (S (S n)) = odd n
 
 -- This is called the dotminus or monus operator
 -- (also: proper subtraction, arithmetic subtraction, ...).
 -- It behaves like subtraction, except that it returns 0
 -- when "normal" subtraction would return a negative number.
 monus :: Nat -> Nat -> Nat
-monus = undefined
+monus O _ = O
+monus n O = n
+monus (S n) (S m) = monus n m
 
 (-*) :: Nat -> Nat -> Nat
 (-*) = monus
 
 -- multiplication
+mult :: Nat -> Nat -> Nat
+mult n O = O
+mult n (S m) = n * m + n 
+
 (*) :: Nat -> Nat -> Nat
-(*) = undefined
+(*) = mult
 
 infixl 7 *
 
 -- exponentiation
 (^) :: Nat -> Nat -> Nat
-(^) = undefined
+(^) _ O = one 
+(^) n (S m) = (n ^ m) * n 
 
--- decide: infix? ? ^
+infixr 8 ^
 
 -- quotient
 (/) :: Nat -> Nat -> Nat

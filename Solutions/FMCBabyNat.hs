@@ -113,10 +113,13 @@ infix 1 |||
 -- x `absDiff` y = |x - y|
 -- (Careful here: this - is the actual minus operator we know from the integers!)
 absDiff :: Nat -> Nat -> Nat
-absDiff n m =
-  case n -* m of
-    O -> m -* n 
-    n' -> n'
+-- absDiff n m =
+  -- case n -* m of
+    -- O -> m -* n 
+    -- n' -> n'
+absDiff n O = n
+absDiff O m = m
+absDiff (S n) (S m) = absDiff n m
 
 (|-|) :: Nat -> Nat -> Nat
 (|-|) = absDiff

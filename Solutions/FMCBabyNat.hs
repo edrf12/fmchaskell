@@ -65,10 +65,12 @@ monus (S n) (S m) = monus n m
 (-*) :: Nat -> Nat -> Nat
 (-*) = monus
 
+infixl 6 -*
+
 -- multiplication
 mult :: Nat -> Nat -> Nat
 mult n O = O
-mult n (S m) = n * m + n 
+mult n (S m) = (n * m) + n 
 
 (*) :: Nat -> Nat -> Nat
 (*) = mult
@@ -84,23 +86,37 @@ infixr 8 ^
 
 -- quotient
 (/) :: Nat -> Nat -> Nat
-(/) = undefined
+(/) _ O = undefined
+(/) n (S m) = 
+  case n -* m of
+    O -> O -- This fits cases like n / (n + m) with m != 0
+    _ -> S ((n -* S m) / S m)
+    
+infixl 7 /
 
 -- remainder
 (%) :: Nat -> Nat -> Nat
-(%) = undefined
+(%) n m = n -* (n/m) * m
 
 -- divides
 -- just for a change, we start by defining the "symbolic" operator
 -- and then define `devides` as a synonym to it
 -- again, outputs: O means False, S O means True
 (|||) :: Nat -> Nat -> Nat
-(|||) = undefined
+(|||) n m =
+  case m % n of
+    O -> S O
+    _ -> O
+
+infix 1 |||
 
 -- x `absDiff` y = |x - y|
 -- (Careful here: this - is the actual minus operator we know from the integers!)
 absDiff :: Nat -> Nat -> Nat
-absDiff = undefined
+absDiff n m =
+  case n -* m of
+    O -> m -* n 
+    n' -> n'
 
 (|-|) :: Nat -> Nat -> Nat
 (|-|) = absDiff

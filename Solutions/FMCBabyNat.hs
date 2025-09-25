@@ -125,13 +125,20 @@ absDiff (S n) (S m) = absDiff n m
 (|-|) = absDiff
 
 factorial :: Nat -> Nat
-factorial = undefined
+factorial O = S O
+factorial (S n) = factorial n * S n
 
 -- signum of a number (-1, 0, or 1)
 sg :: Nat -> Nat
-sg = undefined
+sg O = O
+sg _ = S O
 
 -- lo b a is the floor of the logarithm base b of a
 lo :: Nat -> Nat -> Nat
-lo = undefined
-
+lo _ O = undefined 
+lo O _ = undefined 
+lo _ (S O) = O
+lo b a =
+  case a/b of
+    O -> O
+    n -> S (lo b n)

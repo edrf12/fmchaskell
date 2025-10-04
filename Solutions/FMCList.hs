@@ -13,6 +13,7 @@ import Prelude
 import qualified Prelude   as P
 import qualified Data.List as L
 import qualified Data.Char as C
+import FMCNat
 
 {- import qualified ... as ... ?
 
@@ -58,27 +59,32 @@ write [u,v]     for our u `Cons` (v `Cons` Nil)
 -}
 
 head :: [a] -> a
-head [] = undefined 
-head [n] = n
-head (_ : s) = head s
+head [] = undefined
+head (x : xs) = x
 
 tail :: [a] -> [a]
-tail = undefined
+tail [] = undefined 
+tail (x : xs) = xs 
 
 null :: [a] -> Bool
-null = undefined
+null [] = True
+null _ = False
 
 length :: Integral i => [a] -> i
-length = undefined
+length [] = 0
+length (x : xs) = length xs + 1
 
 sum :: Num a => [a] -> a
-sum = undefined
+sum [] = 0
+sum (x : xs) = sum xs + x
 
 product :: Num a => [a] -> a
-product = undefined
+product [] = 1
+product (x : xs) = x * product xs 
 
 reverse :: [a] -> [a]
-reverse = undefined
+reverse [] = []
+reverse (x : xs) = reverse xs <: x 
 
 (++) :: [a] -> [a] -> [a]
 [] ++ ys = ys 
@@ -90,7 +96,9 @@ infixr 5 ++
 
 -- (snoc is cons written backwards)
 snoc :: a -> [a] -> [a]
-snoc = undefined
+snoc a [] = [a]
+snoc a [x] = [x, a] 
+snoc a (x : xs) = x : snoc a xs
 
 (<:) :: [a] -> a -> [a]
 (<:) = flip snoc
@@ -105,10 +113,20 @@ xs +++ (y:ys) = (xs +++ [y]) +++ ys
 -- (hmm?!)
 infixl 5 +++
 
--- minimum :: Ord a => [a] -> a
--- maximum :: Ord a => [a] -> a
+minimum :: Ord a => [a] -> a
+minimum [] = undefined 
+minimum [x] = x
+minimum (x : (x' : xs))
+  | x < x' = minimum (x : xs)
+  | otherwise = minimum (x' : xs)
 
--- take
+maximum :: Ord a => [a] -> a
+maximum [] = undefined 
+maximum [x] = x
+maximum  (x : (x' : xs))
+  | x > x' = maximum (x : xs)
+  | otherwise = maximum (x' : xs)
+
 -- drop
 
 -- takeWhile

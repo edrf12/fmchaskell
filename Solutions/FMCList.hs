@@ -150,24 +150,57 @@ dropWhile p (x : xs)
 
 tails :: [a] -> [[a]]
 tails [] = [[]]
-tails [x] = [x] : [[]]
 tails (x : xs) = (x : xs) : tails xs
+
+init :: [a] -> [a]
+init [] = []
+init [x] = []
+init (x : xs) = x : init xs
+
+inits :: [a] -> [[a]]
+inits [] = [[]]
+inits xs = inits (init xs) +++ [xs]
+
 -- subsequences
 
--- any
--- all
+any :: (a -> Bool) -> [a] -> Bool
+any _ [] = False
+any p (x : xs) = p x || any p xs
 
--- and
--- or
+all :: (a -> Bool) -> [a] -> Bool
+all _ [] = False
+all p [x] = p x
+all p (x : xs)
+  | p x = all p xs
+  | otherwise = False
 
--- concat
+and :: [Bool] -> Bool
+and [x] = x
+and (False : _) = False
+and (_ : xs) = and xs
+
+or :: [Bool] -> Bool
+or [x] = x
+or (True : _) = True
+or (_ : xs) = or xs
+
+concat :: [[a]] -> [a]
+concat [xs] = xs
+concat (x : xs) = x ++ concat xs
 
 -- elem using the funciton 'any' above
+elem :: Eq a => a -> [a] -> Bool
+elem x xs = any (== x) xs
 
 -- elem': same as elem but elementary definition
 -- (without using other functions except (==))
+elem' :: Eq a => a -> [a] -> Bool
+elem' _ [] = False 
+elem' x (x' : xs) = x == x' || elem' x xs 
 
--- (!!)
+(!!) :: [a] -> Int -> a
+(x : _) !! 0 = x
+(x : xs) !! n = xs !! (n - 1)
 
 -- filter
 -- map

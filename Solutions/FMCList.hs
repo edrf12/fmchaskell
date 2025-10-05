@@ -13,7 +13,6 @@ import Prelude
 import qualified Prelude   as P
 import qualified Data.List as L
 import qualified Data.Char as C
-import FMCNat
 
 {- import qualified ... as ... ?
 
@@ -127,15 +126,32 @@ maximum  (x : (x' : xs))
   | x > x' = maximum (x : xs)
   | otherwise = maximum (x' : xs)
 
--- drop
+take :: Int -> [a] -> [a]
+take _ [] = []
+take 0 _ = []
+take n (x : xs) = x : take (n - 1) xs 
 
--- takeWhile
--- dropWhile
+drop :: Int -> [a] -> [a]
+drop _ [] = []
+drop 0 xs = xs 
+drop n (x : xs) = drop (n - 1) xs
 
--- tails
--- init
--- inits
+takeWhile :: (a -> Bool) -> [a] -> [a]
+takeWhile _ [] = []
+takeWhile p (x : xs)
+  | p x = x : takeWhile p xs 
+  | otherwise = []
 
+dropWhile :: (a -> Bool) -> [a] -> [a]
+dropWhile _ [] = []
+dropWhile p (x : xs)
+  | p x = dropWhile p xs 
+  | otherwise = x : xs
+
+tails :: [a] -> [[a]]
+tails [] = [[]]
+tails [x] = [x] : [[]]
+tails (x : xs) = (x : xs) : tails xs
 -- subsequences
 
 -- any

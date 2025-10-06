@@ -159,7 +159,7 @@ init (x : xs) = x : init xs
 
 inits :: [a] -> [[a]]
 inits [] = [[]]
-inits xs = inits (init xs) +++ [xs]
+inits xs = inits (init xs) ++ [xs]
 
 -- subsequences
 
@@ -202,16 +202,46 @@ elem' x (x' : xs) = x == x' || elem' x xs
 (x : _) !! 0 = x
 (x : xs) !! n = xs !! (n - 1)
 
--- filter
--- map
+filter :: (a -> Bool) -> [a] -> [a]
+filter p [x]
+  | p x = [x]
+  | otherwise = []
+filter p (x : xs)
+  | p x = x : filter p xs
+  | otherwise = filter p xs 
 
--- cycle
--- repeat
--- replicate
+map :: (a -> b) -> [a] -> [b]
+map p [x] = [p x] 
+map p (x : xs) = p x : map p xs
 
--- isPrefixOf
--- isInfixOf
--- isSuffixOf
+cycle :: [a] -> [a]
+cycle xs = xs ++ cycle xs
+
+repeat :: a -> [a]
+repeat x = x : repeat x
+
+replicate :: Int -> a -> [a]
+replicate 0 _ = []
+replicate n x = x : replicate (n - 1) x
+
+isPrefixOf :: Eq a => [a] -> [a] -> Bool
+isPrefixOf [] _ = True
+isPrefixOf _ [] = False
+isPrefixOf (x : xs) (y : ys) = x == y && isPrefixOf xs ys
+
+-- isInfixOf :: Eq a => [a] -> [a] -> Bool
+-- isInfixOf [] _ = True
+-- isInfixOf _ [] = False
+-- isInfixOf (x : xs) (y : ys)
+  -- | x == y = isInfixOf xs ys 
+  -- | otherwise = isInfixOf (x : xs) ys 
+-- This implementation is not even close to being correct
+-- It will give incorrect answers to things like isInfixOf [1,2] [1,3,2,4,5]
+
+isSuffixOf :: Eq a => [a] -> [a] -> Bool
+isSuffixOf [] _ = True
+isSuffixOf _ [] = False
+isSuffixOf xs ys = elem xs (tails ys)
 
 -- zip
 -- zipWith
